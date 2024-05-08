@@ -18,6 +18,7 @@
 		A909FDD02BEBA059005A7C88 /* MainViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A909FDCF2BEBA059005A7C88 /* MainViewControllerViewModel.swift */; };
 		A909FDD22BEBAC6B005A7C88 /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A909FDD12BEBAC6B005A7C88 /* ImageViewExtension.swift */; };
 		A909FDDB2BEBE95E005A7C88 /* NetworkServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A909FDDA2BEBE95D005A7C88 /* NetworkServiceExtension.swift */; };
+		A909FDDE2BEBEA9B005A7C88 /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A909FDDD2BEBEA9B005A7C88 /* FullScreenViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		A909FDCF2BEBA059005A7C88 /* MainViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerViewModel.swift; sourceTree = "<group>"; };
 		A909FDD12BEBAC6B005A7C88 /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
 		A909FDDA2BEBE95D005A7C88 /* NetworkServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceExtension.swift; sourceTree = "<group>"; };
+		A909FDDD2BEBEA9B005A7C88 /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 			children = (
 				A909FDD72BEBD2BA005A7C88 /* Launch */,
 				A909FDD52BEBD25B005A7C88 /* MainPage */,
+				A909FDDC2BEBEA71005A7C88 /* FullScreenPage */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -135,6 +138,14 @@
 				A909FDBD2BEB7E13005A7C88 /* Assets.xcassets */,
 			);
 			path = Recourses;
+			sourceTree = "<group>";
+		};
+		A909FDDC2BEBEA71005A7C88 /* FullScreenPage */ = {
+			isa = PBXGroup;
+			children = (
+				A909FDDD2BEBEA9B005A7C88 /* FullScreenViewController.swift */,
+			);
+			path = FullScreenPage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +229,7 @@
 				A909FDD22BEBAC6B005A7C88 /* ImageViewExtension.swift in Sources */,
 				A909FDCB2BEB8BC1005A7C88 /* Model.swift in Sources */,
 				A909FDB92BEB7E11005A7C88 /* MainViewController.swift in Sources */,
+				A909FDDE2BEBEA9B005A7C88 /* FullScreenViewController.swift in Sources */,
 				A909FDB52BEB7E11005A7C88 /* AppDelegate.swift in Sources */,
 				A909FDC92BEB7FBC005A7C88 /* CustomCell.swift in Sources */,
 				A909FDB72BEB7E11005A7C88 /* SceneDelegate.swift in Sources */,

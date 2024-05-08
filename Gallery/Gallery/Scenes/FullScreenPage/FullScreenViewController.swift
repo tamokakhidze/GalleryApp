@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FullScreenViewController.swift
 //  Gallery
 //
 //  Created by Tamuna Kakhidze on 08.05.24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainViewController: UIViewController {
+class FullScreenViewController: UIViewController {
     
     private var collectionView: UICollectionView?
     private var viewModel = MainViewControllerViewModel()
@@ -22,26 +22,33 @@ final class MainViewController: UIViewController {
     private var dataSource: DataSourse!
     private var snapShot = DataSourseSnapshot()
     
+    var photos: [String] = []
+    var selectedPhotoIndex: Int = 0
+       
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
     }
     
-    func setup() {
+    private func setup() {
         viewModel.delegate = self
         view.backgroundColor = .systemBackground
         configureCollectionView()
         viewModel.viewdidload()
         configureCollectionViewDataSource()
+        //updateSnapshot()
+
     }
+    
     
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 1.5
         layout.minimumInteritemSpacing = 1
-        let itemWidth: CGFloat = 124
-        let itemHeight: CGFloat = 122
+        let itemWidth: CGFloat = 430
+        let itemHeight: CGFloat = 900
         layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         guard let collectionView = collectionView else { return }
@@ -61,33 +68,32 @@ final class MainViewController: UIViewController {
         dataSource = DataSourse(collectionView: collectionView!, cellProvider:  { (collectionView,
                                                                                    indexPath, unsplashPhoto) -> CustomCell? in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell?
-            cell?.configure(image: unsplashPhoto.urls.small)
+            let photoURL = self.photos[indexPath.item]
+            cell?.configure(image: photoURL)
             return cell
         })
     }
     
-}
-
-extension MainViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedPhotoURLs = viewModel.photosArray.map { $0.urls.small }
-        
-        let fullScreenVC = FullScreenViewController()
-        
-        fullScreenVC.photos = selectedPhotoURLs
-        fullScreenVC.selectedPhotoIndex = indexPath.item
-        
-        navigationController?.pushViewController(fullScreenVC, animated: true)
-    }
+//    private func configureCollectionViewDataSource() {
+//            dataSource = UICollectionViewDiffableDataSource<ImagesListSection, UnsplashPhoto>(collectionView: collectionView!) { (collectionView, indexPath, unsplashPhoto) -> CustomCell? in
+//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
+//                cell.configure(image: unsplashPhoto.urls.small)
+//                return cell
+//            }
+//        }
+    
 }
 
 
+extension FullScreenViewController: UICollectionViewDelegate {
+    
+}
 
-extension MainViewController: MainViewControllerViewModelDelegate {
+extension FullScreenViewController: MainViewControllerViewModelDelegate {
     
     func imagesFetched() {
         DispatchQueue.main.async {
-            self.applySnapshot(images: self.viewModel.photosArray)
+            self.collectionView?.reloadData()
         }
     }
     
