@@ -1,0 +1,15 @@
+{
+  "originHash" : "e1c03f740616c87f278bec48e39e6245afae205dc6a9be87c27e31639735196c",
+  "pins" : [
+    {
+      "identity" : "fetchingapi_package",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tamokakhidze/FetchingAPI_Package",
+      "state" : {
+        "branch" : "main",
+        "revision" : "14b16a19ccfbb428e305a4369235e386a1e1a188"
+      }
+    }
+  ],
+  "version" : 3
+}
