@@ -33,7 +33,6 @@ class MainViewControllerViewModel {
             case .success(let success):
                 self!.photosArray = success
                 self?.delegate?.imagesFetched()
-                print(self!.photosArray)
                 self?.delegate?.applySnapshot(images: success)
             case .failure(let failure):
                 print(failure.localizedDescription)

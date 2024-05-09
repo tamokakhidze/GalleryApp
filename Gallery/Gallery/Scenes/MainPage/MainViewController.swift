@@ -68,14 +68,26 @@ final class MainViewController: UIViewController {
     
 }
 
+
+//extension MainViewController: UICollectionViewDelegate {
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let selectedPhotoURL = viewModel.photosArray[indexPath.item].urls.small
+//        
+//        let fullScreenVC = FullScreenViewController()
+//        fullScreenVC.selectedPhotoURL = selectedPhotoURL
+//        
+//        navigationController?.pushViewController(fullScreenVC, animated: true)
+//    }
+//}
+
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedPhotoURLs = viewModel.photosArray.map { $0.urls.small }
+        let selectedPhotosURLs = viewModel.photosArray.map { $0}
+        
         
         let fullScreenVC = FullScreenViewController()
-        
-        fullScreenVC.photos = selectedPhotoURLs
-        fullScreenVC.selectedPhotoIndex = indexPath.item
+        fullScreenVC.photos = selectedPhotosURLs
+        fullScreenVC.selectedPhotoIndex = indexPath.row
         
         navigationController?.pushViewController(fullScreenVC, animated: true)
     }

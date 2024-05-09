@@ -22,13 +22,17 @@ class FullScreenViewController: UIViewController {
     private var dataSource: DataSourse!
     private var snapShot = DataSourseSnapshot()
     
-    var photos: [String] = []
+    var photos: [UnsplashPhoto] = []
     var selectedPhotoIndex: Int = 0
+    var selectedPhotoURL: String?
        
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+    }
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
     
     private func setup() {
@@ -37,53 +41,57 @@ class FullScreenViewController: UIViewController {
         configureCollectionView()
         viewModel.viewdidload()
         configureCollectionViewDataSource()
-        //updateSnapshot()
-
+        setNeedsStatusBarAppearanceUpdate()
+        
     }
     
     
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
+        let itemWidth: CGFloat = view.bounds.width
+        let itemHeight: CGFloat = view.bounds.height
+        
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 1.5
-        layout.minimumInteritemSpacing = 1
-        let itemWidth: CGFloat = 430
-        let itemHeight: CGFloat = 900
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
         layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         guard let collectionView = collectionView else { return }
+        collectionView.contentInsetAdjustmentBehavior = .never
+        
         collectionView.register(CustomCell.self, forCellWithReuseIdentifier: CustomCell.identifier)
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 77).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        setConstraints()
         
     }
     
-    private func configureCollectionViewDataSource() {
-        dataSource = DataSourse(collectionView: collectionView!, cellProvider:  { (collectionView,
-                                                                                   indexPath, unsplashPhoto) -> CustomCell? in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell?
-            let photoURL = self.photos[indexPath.item]
-            cell?.configure(image: photoURL)
-            return cell
-        })
+    private func setConstraints() {
+        collectionView?.translatesAutoresizingMaskIntoConstraints = false
+        collectionView?.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        collectionView?.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        collectionView?.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collectionView?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
-//    private func configureCollectionViewDataSource() {
-//            dataSource = UICollectionViewDiffableDataSource<ImagesListSection, UnsplashPhoto>(collectionView: collectionView!) { (collectionView, indexPath, unsplashPhoto) -> CustomCell? in
-//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
-//                cell.configure(image: unsplashPhoto.urls.small)
-//                return cell
-//            }
-//        }
-    
+    private func configureCollectionViewDataSource() {
+        dataSource = DataSourse(collectionView: collectionView!) { (collectionView, indexPath, photoURL) -> CustomCell? in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCell.identifier, for: indexPath) as? CustomCell
+            cell?.configure(image: photoURL.urls.small)
+            return cell
+        }
+    }
+
 }
 
+extension FullScreenViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.frame.size
+    }
+}
 
 extension FullScreenViewController: UICollectionViewDelegate {
     
@@ -91,17 +99,15 @@ extension FullScreenViewController: UICollectionViewDelegate {
 
 extension FullScreenViewController: MainViewControllerViewModelDelegate {
     
-    func imagesFetched() {
-        DispatchQueue.main.async {
-            self.collectionView?.reloadData()
-        }
-    }
+    func imagesFetched() {}
     
     func applySnapshot(images: [UnsplashPhoto]) {
         snapShot = DataSourseSnapshot()
         snapShot.appendSections([ImagesListSection.main])
-        snapShot.appendItems(images)
+        snapShot.appendItems(photos.map { $0 })
         dataSource.apply(snapShot, animatingDifferences: false)
+        collectionView?.scrollToItem(at: IndexPath(item: selectedPhotoIndex, section: 0), at: .centeredHorizontally, animated: false)
+        collectionView?.isPagingEnabled = true
     }
 }
 
