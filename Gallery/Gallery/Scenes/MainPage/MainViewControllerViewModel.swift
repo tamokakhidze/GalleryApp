@@ -17,7 +17,7 @@ protocol MainViewControllerViewModelDelegate: AnyObject {
     func applySnapshot(images: [UnsplashPhoto])
 }
 
-class MainViewControllerViewModel {
+final class MainViewControllerViewModel {
     
     var photosArray = [UnsplashPhoto]()
     weak var delegate: MainViewControllerViewModelDelegate?
@@ -27,6 +27,7 @@ class MainViewControllerViewModel {
         self.dataService = dataService
     }
     
+    // MARK: - LifeCycle
     func viewdidload() {
         dataService.fetchData { [weak self] result in
             switch result {
@@ -39,6 +40,9 @@ class MainViewControllerViewModel {
             }
         }
     }
-    
 }
 
+// MARK: - Extensions
+extension MainViewControllerViewModelDelegate {
+    func imagesFetched() {}
+}

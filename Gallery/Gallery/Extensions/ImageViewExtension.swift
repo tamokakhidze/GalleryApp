@@ -6,10 +6,10 @@
 //
 
 import UIKit
-
+// MARK: - Set image extension
 extension UIImageView {
-    func setImage(with url: URL, contentMode mode: ContentMode = .scaleToFill) {
-        contentMode = mode
+    func setImage(with url: URL) {
+        
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard
                 let data = data, error == nil,

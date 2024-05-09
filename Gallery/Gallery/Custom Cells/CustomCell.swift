@@ -9,12 +9,15 @@ import UIKit
 
 final class CustomCell: UICollectionViewCell {
     
+    // MARK: - Properties
     static var identifier = "CustomCell"
-    private var imageView = UIImageView()
+    var imageView = UIImageView()
+    var isFullScreen: Bool = false
     
+    // MARK: - Setup
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .green
+        contentView.backgroundColor = .systemBackground
         imageView = configureImageView()
     }
     
@@ -30,6 +33,7 @@ final class CustomCell: UICollectionViewCell {
         imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        imageView.clipsToBounds = true
         
         return imageView
     }
@@ -37,5 +41,6 @@ final class CustomCell: UICollectionViewCell {
     func configure(image: String) {
         guard let imageUrl = URL(string: image) else { return }
         imageView.setImage(with: imageUrl)
+        imageView.contentMode = isFullScreen ? .scaleAspectFit : .scaleAspectFill
     }
 }

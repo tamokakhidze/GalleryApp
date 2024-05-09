@@ -7,8 +7,9 @@
 
 import UIKit
 
-class FullScreenViewController: UIViewController {
+final class FullScreenViewController: UIViewController {
     
+    // MARK: - Properties and UI components
     private var collectionView: UICollectionView?
     private var viewModel = MainViewControllerViewModel()
     
@@ -24,62 +25,34 @@ class FullScreenViewController: UIViewController {
     
     var photos: [UnsplashPhoto] = []
     var selectedPhotoIndex: Int = 0
-    var selectedPhotoURL: String?
        
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setup()
-    }
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
+    // MARK: - LifeCycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setup()
+    }
+    
+    // MARK: - Setup
     private func setup() {
         viewModel.delegate = self
         view.backgroundColor = .systemBackground
-        configureCollectionView()
+        //configureCollectionView()
+        collectionView = configureCollectionView(view: view, itemWidth: view.bounds.width, itemHeight: view.bounds.height, lineSpacing: 0, itemSpacing: 0, scrollDirection: .horizontal)
+        collectionView!.delegate = self
         viewModel.viewdidload()
         configureCollectionViewDataSource()
         setNeedsStatusBarAppearanceUpdate()
-        
     }
     
-    
-    private func configureCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        let itemWidth: CGFloat = view.bounds.width
-        let itemHeight: CGFloat = view.bounds.height
-        
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 0
-        layout.minimumInteritemSpacing = 0
-        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
-        
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        guard let collectionView = collectionView else { return }
-        collectionView.contentInsetAdjustmentBehavior = .never
-        
-        collectionView.register(CustomCell.self, forCellWithReuseIdentifier: CustomCell.identifier)
-        collectionView.delegate = self
-        collectionView.backgroundColor = .clear
-        view.addSubview(collectionView)
-        
-        setConstraints()
-        
-    }
-    
-    private func setConstraints() {
-        collectionView?.translatesAutoresizingMaskIntoConstraints = false
-        collectionView?.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        collectionView?.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        collectionView?.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        collectionView?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    }
-    
+    // MARK: - DataSource configuration
     private func configureCollectionViewDataSource() {
         dataSource = DataSourse(collectionView: collectionView!) { (collectionView, indexPath, photoURL) -> CustomCell? in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCell.identifier, for: indexPath) as? CustomCell
+            cell!.isFullScreen = true
             cell?.configure(image: photoURL.urls.small)
             return cell
         }
@@ -87,6 +60,7 @@ class FullScreenViewController: UIViewController {
 
 }
 
+// MARK: - FullScreenVC extensions
 extension FullScreenViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.frame.size
@@ -98,9 +72,7 @@ extension FullScreenViewController: UICollectionViewDelegate {
 }
 
 extension FullScreenViewController: MainViewControllerViewModelDelegate {
-    
-    func imagesFetched() {}
-    
+        
     func applySnapshot(images: [UnsplashPhoto]) {
         snapShot = DataSourseSnapshot()
         snapShot.appendSections([ImagesListSection.main])
