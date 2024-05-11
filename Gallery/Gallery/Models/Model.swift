@@ -7,11 +7,6 @@
 
 import Foundation
 
-struct Images: Identifiable, Codable {
-    var id: Int
-}
-
-
 struct UnsplashPhoto: Decodable, Hashable {
     let urls: URLs
 }

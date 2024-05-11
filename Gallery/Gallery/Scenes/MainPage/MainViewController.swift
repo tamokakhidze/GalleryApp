@@ -71,7 +71,7 @@ extension MainViewController: UICollectionViewDelegate {
         
         let fullScreenVC = FullScreenViewController()
         fullScreenVC.photos = selectedPhotosURLs
-        fullScreenVC.selectedPhotoIndex = indexPath.row
+        fullScreenVC.selectedPhotoIndex = indexPath
         
         navigationController?.pushViewController(fullScreenVC, animated: true)
     }
@@ -92,13 +92,13 @@ extension MainViewController: MainViewControllerViewModelDelegate {
         dataSource.apply(snapShot, animatingDifferences: false)
     }
     
-    func navigateToFullScreen(selectedPhotosURLs: [UnsplashPhoto], index: Int) {
-        let fullScreenVC = FullScreenViewController()
-        fullScreenVC.photos = selectedPhotosURLs
-        fullScreenVC.selectedPhotoIndex = index
-        
-        navigationController?.pushViewController(fullScreenVC, animated: true)
-    }
+//    func navigateToFullScreen(selectedPhotosURLs: [UnsplashPhoto], index: Int) {
+//        let fullScreenVC = FullScreenViewController()
+//        fullScreenVC.photos = selectedPhotosURLs
+//        fullScreenVC.selectedPhotoIndex = index
+//        
+//        navigationController?.pushViewController(fullScreenVC, animated: true)
+//    }
     
 }
 

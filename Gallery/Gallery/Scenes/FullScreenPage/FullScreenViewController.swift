@@ -24,7 +24,7 @@ final class FullScreenViewController: UIViewController {
     private var snapShot = DataSourseSnapshot()
     
     var photos: [UnsplashPhoto] = []
-    var selectedPhotoIndex: Int = 0
+    var selectedPhotoIndex: IndexPath?
        
     override var prefersStatusBarHidden: Bool {
         return true
@@ -78,7 +78,7 @@ extension FullScreenViewController: MainViewControllerViewModelDelegate {
         snapShot.appendSections([ImagesListSection.main])
         snapShot.appendItems(photos.map { $0 })
         dataSource.apply(snapShot, animatingDifferences: false)
-        collectionView?.scrollToItem(at: IndexPath(item: selectedPhotoIndex, section: 0), at: .centeredHorizontally, animated: false)
+        collectionView?.scrollToItem(at: selectedPhotoIndex!, at: .centeredHorizontally, animated: false)
         collectionView?.isPagingEnabled = true
     }
 }
